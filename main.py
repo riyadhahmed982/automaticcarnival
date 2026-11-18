@@ -34,7 +34,7 @@ from pydantic import BaseModel
 logging.basicConfig(level=logging.INFO)
 
 # ───────────────────────── config ─────────────────────────
-BOT_TOKEN = os.environ["BOT_TOKEN"]
+BOT_TOKEN = os.environ["8222098422:AAFzATtcfRbIShraOjlM2rEziN53Yi_K7QY"]
 ADMIN_IDS = {int(x) for x in os.getenv("ADMIN_IDS", "").replace(" ", "").split(",") if x}
 WEBAPP_URL = os.getenv("WEBAPP_URL", "").rstrip("/")
 DB_PATH = os.getenv("DB_PATH", "vault.db")          # on Railway: point this at a Volume, e.g. /data/vault.db
