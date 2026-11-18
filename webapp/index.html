@@ -1,1 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06040c; --card:rgba(255,255,255,.045); --line:rgba(255,255,255,.09);
+  --text:#f3effc; --muted:#8e88a6; --gold1:#f8cd7c; --gold2:#eea45e; --teal:#3de3c6; --pink:#ff6b8a; --violet:#7c5cff;
+  --serif:'Playfair Display',Georgia,'Times New Roman',serif; --sans:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;min-height:100%}
+body{background:
+  radial-gradient(120% 60% at 0% 0%,rgba(98,56,210,.55),transparent 60%),
+  radial-gradient(90% 50% at 100% 100%,rgba(140,40,70,.35),transparent 60%),var(--bg);
+  background-attachment:fixed;padding-bottom:120px}
+#app{max-width:520px;margin:0 auto;padding:16px 16px 0}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.brand{font-family:var(--serif);font-style:italic;font-weight:800;font-size:26px;flex:1;background:linear-gradient(90deg,#fff,#d9c9ff 55%,var(--gold1));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(10,8,20,.7);border-radius:999px;padding:11px 16px;font-weight:700}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--gold1)}
+.ico{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(10,8,20,.7);display:grid;place-items:center;font-size:18px;color:var(--text)}
+.av{width:46px;height:46px;border-radius:50%;padding:2px;background:conic-gradient(var(--gold1),var(--pink),var(--violet),var(--teal),var(--gold1));flex:none}
+.av img,.av span{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:#1a1330;font-weight:800}
+h1{font-size:40px;line-height:1.05;margin:0 0 10px;font-weight:800;letter-spacing:-1.2px}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold1),#ff8fb0,#b99bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:24px;margin:30px 0 14px;font-weight:800;display:flex;justify-content:space-between;align-items:baseline}
+h2 a{font-size:15px;color:var(--muted);font-weight:600}
+.sub{color:var(--muted);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:18px}
+.search{display:flex;align-items:center;gap:12px;padding:3px;border-radius:999px;background:linear-gradient(90deg,#33e0c8,#ff6b9a 70%,#8a6bff);margin-bottom:6px}
+.search div{flex:1;display:flex;align-items:center;gap:12px;background:#0a0814;border-radius:999px;padding:15px 20px}
+.search input{flex:1;background:none;border:0;outline:0;color:var(--text);font:inherit;font-size:17px;min-width:0}
+.search input::placeholder{color:var(--muted)}
+.chips{display:flex;gap:10px;overflow-x:auto;margin:14px -16px 0;padding:0 16px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);padding:12px 20px;border-radius:999px;font-weight:700;font-size:15px;font-family:inherit}
+.chip.on{background:#f3efe6;color:#14101f;border-color:transparent}
+.seg{display:flex;padding:8px;border:1px solid var(--line);border-radius:22px;background:rgba(10,8,20,.6);gap:6px;margin-bottom:16px}
+.seg button{flex:1;border:0;padding:15px;border-radius:15px;background:none;color:var(--muted);font:inherit;font-weight:800;font-size:16px}
+.seg button.on{background:linear-gradient(90deg,var(--gold1),var(--gold2));color:#2a1b06}
+.btn{border:0;border-radius:20px;padding:16px 20px;font:inherit;font-weight:800;font-size:17px;color:#2a1b06;background:linear-gradient(90deg,var(--gold1),var(--gold2));box-shadow:0 10px 30px rgba(238,164,94,.25);width:100%}
+.btn.sm{width:auto;padding:12px 22px;border-radius:16px;font-size:15px}
+.btn.ghost{background:rgba(255,255,255,.07);color:var(--text);box-shadow:none}
+.cats{display:flex;gap:14px;overflow-x:auto;margin:0 -16px;padding:0 16px;scrollbar-width:none}
+.cat{flex:none;width:150px;height:150px;border-radius:30px;background:linear-gradient(145deg,#5b3df0,#7a62ff);padding:20px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;border:0;text-align:left;color:#fff;font-family:inherit}
+.cat::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.14)}
+.cat b{font-family:var(--serif);font-style:italic;font-size:22px}.cat small{opacity:.8;font-size:14px;margin-top:4px}
+.file{border:1px solid rgba(226,170,80,.45);border-radius:28px;padding:18px;margin-bottom:16px;background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));box-shadow:0 0 30px rgba(226,170,80,.08)}
+.file .row{display:flex;gap:14px}
+.ext{flex:none;width:66px;height:80px;border-radius:14px 22px 14px 14px;background:rgba(210,150,90,.18);color:var(--gold1);display:grid;place-items:center;font-weight:800;font-size:15px}
+.ft{flex:1;min-width:0}
+.ft b{font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.15;display:block;word-break:break-word}
+.by{color:var(--muted);margin-top:4px;font-size:14px}.by strong{color:var(--text);font-family:var(--serif);font-style:italic}
+.ver{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#2f80ff;color:#fff;font-size:11px;margin-left:4px;vertical-align:1px}
+.meta{display:flex;gap:12px;color:var(--muted);font-size:14px;margin-top:8px;flex-wrap:wrap;align-items:center}
+.desc{color:var(--muted);margin:8px 0 0;font-size:14px}
+.price{flex:none;display:flex;flex-direction:column;gap:8px;width:92px}
+.price button{border:1px solid rgba(226,170,80,.5);background:rgba(226,170,80,.13);color:var(--gold1);border-radius:16px;padding:12px 6px;font:inherit;font-weight:800;font-size:16px}
+.price button.own{background:rgba(61,227,198,.12);border-color:rgba(61,227,198,.5);color:var(--teal)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
+.act{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);padding:11px 17px;border-radius:999px;font:inherit;font-weight:700;font-size:14px}
+.act.on{color:var(--pink);border-color:rgba(255,107,138,.5)}
+.act.link{color:var(--teal);border-color:rgba(61,227,198,.4)}.act.tut{color:var(--pink);border-color:rgba(255,107,138,.4)}
+.row2{display:flex;align-items:center;gap:14px}
+.big{font-size:64px;font-weight:800;line-height:1;letter-spacing:-2px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tile{padding:18px;border-radius:26px;border:1px solid var(--line);background:var(--card)}
+.tile i{display:grid;place-items:center;width:52px;height:52px;border-radius:17px;font-style:normal;font-size:22px;margin-bottom:22px}
+.tile b{font-size:34px;display:block}.tile span{color:var(--muted)}
+.menu{display:flex;flex-direction:column;gap:12px}
+.mi{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--line);border-radius:24px;background:var(--card);width:100%;text-align:left;color:var(--text);font-family:inherit}
+.mi i{flex:none;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-style:normal;font-size:22px;background:rgba(124,92,255,.2)}
+.mi b{display:block;font-size:18px}.mi small{color:var(--muted);font-size:14px}.mi s{margin-left:auto;color:var(--muted);text-decoration:none;font-size:20px}
+.soon{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold1);border:1px solid rgba(226,170,80,.4);border-radius:999px;padding:4px 10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pack{padding:20px 12px;text-align:center;border:1px solid var(--line);border-radius:26px;background:rgba(255,255,255,.04);color:var(--text);font-family:inherit}
+.pack b{font-size:34px;display:block;letter-spacing:-1px}.pack small{color:var(--muted);display:block}.pack em{font-style:normal;color:var(--teal);font-size:14px;font-weight:700;display:block;min-height:18px}.pack strong{color:var(--gold1);font-size:19px;display:block;margin-top:6px}
+.pack.hot{border-color:rgba(226,170,80,.55)}
+.vip{border:1px solid rgba(226,170,80,.5);border-radius:28px;padding:22px;background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(60,30,110,.35))}
+.vip ul{list-style:none;padding:0;margin:16px 0;display:grid;gap:12px;font-size:16px}
+.vip .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vip .opts button{border:0;border-radius:20px;padding:18px 8px;background:linear-gradient(90deg,var(--gold1),var(--gold2));color:#2a1b06;font:inherit;font-weight:800;font-size:19px}
+.vip .opts small{display:block;font-size:17px;margin-top:6px}
+.input{display:flex;gap:12px;padding:18px;border:1px solid var(--line);border-radius:26px;background:var(--card)}
+.input input{flex:1;min-width:0;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.06);color:var(--text);padding:15px 18px;font:inherit;font-size:17px;outline:0;text-transform:uppercase}
+.hist{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:24px;background:var(--card);margin-bottom:12px}
+.hist b{display:block;font-size:17px}.hist small{color:var(--muted)}
+.pos{color:var(--teal);font-weight:800}.neg{color:var(--pink);font-weight:800}
+.hero{text-align:center;padding:26px 16px}
+.avbig{width:128px;height:128px;margin:0 auto 14px;border-radius:50%;padding:4px;background:conic-gradient(var(--gold1),var(--pink),var(--violet),var(--teal),var(--gold1))}
+.avbig img,.avbig span{width:100%;height:100%;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:#1a1330;font-size:44px;font-weight:800}
+.bar{height:12px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:10px 0}
+.bar div{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--gold1))}
+.empty{text-align:center;padding:50px 10px}.empty b{display:block;font-size:20px;margin-bottom:6px}.empty span{color:var(--muted)}
+.cta{display:flex;align-items:center;gap:16px;padding:18px;border:1px solid rgba(255,107,138,.3);border-radius:26px;background:rgba(255,107,138,.07);width:100%;text-align:left;color:var(--text);font-family:inherit;margin-top:20px}
+.cta i{flex:none;width:60px;height:60px;border-radius:18px;background:rgba(255,107,138,.14);display:grid;place-items:center;font-style:normal;font-size:24px}
+.cta b{font-size:19px;display:block}.cta small{color:var(--muted);font-size:15px}
+.streak{display:flex;gap:10px;margin-top:14px}.streak span{flex:1;text-align:center;padding:12px 0;border-radius:14px;background:rgba(255,255,255,.06);color:var(--muted);font-weight:700;font-size:14px}.streak span.done{color:var(--gold1);background:rgba(226,170,80,.15)}
+.copybox{display:flex;align-items:center;gap:10px;border:1.5px dashed rgba(226,170,80,.5);border-radius:22px;padding:10px 10px 10px 18px;margin:14px 0}
+.copybox span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--gold1);font-weight:600}
+.back{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:999px;padding:12px 18px;font:inherit;font-weight:700;margin-bottom:18px}
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(488px,calc(100% - 32px));display:flex;padding:8px;border-radius:34px;background:rgba(14,11,26,.94);border:1px solid var(--line);backdrop-filter:blur(16px);z-index:10}
+nav button{flex:1;border:0;background:none;color:var(--muted);padding:10px 0;border-radius:26px;font:inherit;font-weight:700;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:4px}
+nav button span{font-size:22px;line-height:1}
+nav button.on{background:rgba(255,255,255,.09);color:var(--text)}
+nav button.on span{filter:sepia(1) saturate(4) hue-rotate(5deg)}
+#toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translate(-50%,-90px);background:#f3efe6;color:#14101f;padding:13px 20px;border-radius:16px;font-weight:700;z-index:30;transition:transform .25s;max-width:90%;text-align:center}
+#toast.show{transform:translate(-50%,0)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet>div{width:100%;max-width:520px;background:#120d22;border:1px solid var(--line);border-radius:30px 30px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.stars{display:flex;gap:8px;justify-content:center;margin:18px 0}.stars button{background:none;border:0;font-size:38px;color:#4a4560;padding:0}.stars button.on{color:var(--gold1)}
+.load{color:var(--muted);text-align:center;padding:60px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"><div class="load">Loading…</div></div>
+<nav id="nav"></nav>
+<div id="toast"></div>
+<script>
+// Telegram passes the login data in the URL hash too, so the app works even if telegram-web-app.js is slow to load.
+const hashInit = new URLSearchParams(location.hash.slice(1)).get('tgWebAppData') || '';
+let tg = window.Telegram && Telegram.WebApp;
+function initTg() {
+  tg = window.Telegram && Telegram.WebApp;
+  if (tg) { tg.ready(); tg.expand(); try { tg.setHeaderColor('#06040c'); tg.setBackgroundColor('#06040c'); } catch (e) {} }
+}
+(function () { const s = document.createElement('script'); s.src = 'https://telegram.org/js/telegram-web-app.js'; s.async = true; s.onload = initTg; document.head.appendChild(s); })();
+initTg();
+window.addEventListener('error', e => { const a = document.querySelector('#app'); if (a && a.textContent.trim() === 'Loading…') a.innerHTML = '<div class="empty" style="padding-top:120px"><b>Script error</b><span>' + esc(e.message) + '</span></div>'; });
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let me = null, tab = 'home', sub = null, fq = '', fcat = '', fsaved = 0, fmode = 'library', tfilter = 'all', toastT;
 
+async function api(path, body) {
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 20000);
+  let r;
+  try {
+    r = await fetch('/api' + path, {
+      method: body === undefined ? 'GET' : 'POST', signal: ctl.signal,
+      headers: {'Content-Type': 'application/json', 'X-Init-Data': (tg && tg.initData) || hashInit || ''},
+      body: body === undefined ? undefined : JSON.stringify(body)
+    });
+  } catch (e) { throw new Error(e.name === 'AbortError' ? 'The server is slow to respond. Close the app and open it again.' : 'No connection to the server.'); }
+  finally { clearTimeout(timer); }
+  if (!r.ok) { let m = 'Something went wrong. Try again.'; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(m); }
+  return r.json();
+}
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2400); }
+function confirmBox(msg, ok) { tg && tg.showConfirm ? tg.showConfirm(msg, y => y && ok()) : (confirm(msg) && ok()); }
+const fmtSize = b => b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+const num = n => Number(n).toLocaleString('en-US');
+function ago(ts) { const s = Date.now() / 1000 - ts; if (s < 86400) return 'today'; const d = Math.floor(s / 86400); return d < 30 ? d + 'd ago' : Math.floor(d / 30) + 'mo ago'; }
+const openLink = u => (tg && u.startsWith('https://t.me') ? tg.openTelegramLink(u) : (tg ? tg.openLink(u) : window.open(u)));
+
+function topbar() {
+  const p = tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.photo_url;
+  return `<div class="top"><div class="brand">${esc(me.brand)}</div>
+    <div class="pill"><i class="dot"></i>${num(me.credits)} <span style="color:var(--muted);font-weight:600">cr</span></div>
+    <button class="ico" data-a="bell">🔔</button>
+    <div class="av">${p ? `<img src="${esc(p)}" alt="">` : `<span>${esc((me.name || '?')[0])}</span>`}</div></div>`;
+}
+
+function fileCard(f) {
+  const l = f.links || {};
+  const star = f.rating ? `<span style="color:var(--gold1)">★ ${f.rating} <small style="color:var(--muted)">(${f.rating_count})</small></span>` : '';
+  return `<div class="file"><div class="row"><div class="ext">${esc(f.category)}</div>
+    <div class="ft"><b>${esc(f.title)}</b><div class="by">by <strong>${esc(f.uploader)}</strong><span class="ver">✓</span></div>
+    <div class="meta">${star}<span>${fmtSize(f.size)}</span><span>↓ ${f.downloads}</span><span>${ago(f.created)}</span></div>
+    ${f.description ? `<p class="desc">${esc(f.description)}</p>` : ''}</div>
+    <div class="price">
+      ${f.owned ? `<button class="own" data-a="get" data-id="${f.id}">Get again</button>` :
+        `<button data-a="get" data-id="${f.id}">${f.price === 0 ? 'Free' : num(f.price) + ' cr'}</button><button data-a="stars" data-id="${f.id}">⭐ ${num(f.stars)}</button>`}
+    </div></div>
+    <div class="acts">
+      ${l.tutorial ? `<button class="act tut" data-a="link" data-u="${esc(l.tutorial)}">▶ Tutorial</button>` : ''}
+      ${l.demo ? `<button class="act link" data-a="link" data-u="${esc(l.demo)}">🌐 Live demo</button>` : ''}
+      ${l.bot ? `<button class="act link" data-a="link" data-u="${esc(l.bot)}">🤖 Try the bot</button>` : ''}
+      <button class="act ${f.saved ? 'on' : ''}" data-a="save" data-id="${f.id}">${f.saved ? '♥' : '♡'} Save</button>
+      <button class="act" data-a="rate" data-id="${f.id}">★ Rate</button>
+      <button class="act" data-a="report" data-id="${f.id}">⚑ Report</button>
+    </div></div>`;
+}
+
+async function pageHome() {
+  const h = await api('/home'), d = me.daily;
+  const nxt = d.next_in ? `${d.next_in} more day${d.next_in > 1 ? 's' : ''} for +${d.next_bonus} bonus credits` : 'Max streak reached';
+  return `<h1>Find any file,<br><em>in seconds.</em></h1><p class="sub">Every file in the store, searchable in one place.</p>
+  <div class="search"><div>🔍<input id="hs" placeholder="Search files…" enterkeyhint="search"></div></div>
+  <h2>Categories <a data-a="tab" data-t="files">See all</a></h2>
+  ${h.categories.length ? `<div class="cats">${h.categories.map(c => `<button class="cat" data-a="cat" data-c="${esc(c.name)}">📱<div style="flex:1"></div><b>${esc(c.name)}</b><small>${c.count} file${c.count > 1 ? 's' : ''}</small></button>`).join('')}</div>` : `<div class="card empty"><b>No files yet</b><span>New files will show up here.</span></div>`}
+  <h2>Trending <a data-a="tab" data-t="files">More</a></h2>
+  ${h.trending.map(fileCard).join('') || ''}
+  <h2>Daily reward</h2>
+  <div class="card"><div class="row2"><div style="flex:1"><b style="font-size:21px">${d.claimed ? 'Come back tomorrow' : 'Claim +' + d.amount + ' credits'}</b>
+  <div style="color:var(--muted)">${d.claimed ? 'You already claimed today' : 'Your reward is ready'}</div></div>
+  ${d.claimed ? `<button class="btn sm" style="background:var(--teal)" disabled>✓ Done</button>` : `<button class="btn sm" data-a="daily">Claim</button>`}</div>
+  <div style="border-top:1px solid var(--line);margin:18px 0"></div>
+  <div class="row2"><span style="font-size:42px">🔥</span><b style="font-size:34px">${d.streak}</b><div><b style="font-size:19px">${d.streak}-day streak</b><div style="color:var(--muted)">${nxt}</div></div></div>
+  <div class="streak">${d.steps.map(s => `<span class="${d.streak >= s ? 'done' : ''}">${s}d</span>`).join('')}</div></div>
+  <button class="cta" data-a="tab" data-t="tasks"><i>✅</i><div><b>Running low on credits?</b><small>Finish tasks and earn free credits</small></div></button>`;
+}
+
+async function pageFiles() {
+  const r = await api(`/files?q_=${encodeURIComponent(fq)}&cat=${encodeURIComponent(fcat)}&saved=${fsaved}`);
+  const list = fmode === 'library'
+    ? (r.files.map(fileCard).join('') || `<div class="empty"><b>No files found</b><span>Try another search, or request the file below.</span></div>`)
+    : `<div class="empty"><b>No listings yet</b><span>Files sold by members will appear here.</span></div>`;
+  return `<h1 style="font-size:38px">Files</h1>
+  <div class="seg"><button class="${fmode === 'library' ? 'on' : ''}" data-a="mode" data-m="library">Library</button><button class="${fmode === 'market' ? 'on' : ''}" data-a="mode" data-m="market">Marketplace</button></div>
+  <div class="search"><div>🔍<input id="fs" placeholder="Search files…" value="${esc(fq)}"></div></div>
+  <div class="chips"><button class="chip ${!fcat && !fsaved ? 'on' : ''}" data-a="fc" data-c="">All</button>
+  <button class="chip ${fsaved ? 'on' : ''}" data-a="fsaved">♥ Saved</button>
+  ${r.categories.map(c => `<button class="chip ${fcat === c ? 'on' : ''}" data-a="fc" data-c="${esc(c)}"><i>${esc(c)}</i></button>`).join('')}</div>
+  <h2>All files <a>${fmode === 'library' ? r.files.length + ' files' : ''}</a></h2><div id="flist">${list}</div>
+  <button class="cta" data-a="soon" style="border-color:rgba(255,107,138,.3)"><i>?</i><div><b>Can’t find a file?</b><small>Request it — most voted gets added first</small></div></button>`;
+}
+
+function pageTasks() {
+  const chips = ['all', 'telegram', 'daily', 'channels'];
+  return `<h1 style="font-size:38px">Tasks</h1>
+  <div class="card" style="margin:16px 0;padding:24px"><div style="color:var(--muted)">Earned from tasks</div><div class="big" style="margin:8px 0">+0</div>
+  <div style="color:var(--muted)">0 of 0 done · up to 0 more credits</div><div class="bar"></div></div>
+  <div class="chips" style="margin-bottom:20px">${chips.map(c => `<button class="chip ${tfilter === c ? 'on' : ''}" data-a="tf" data-c="${c}">${c[0].toUpperCase() + c.slice(1)}</button>`).join('')}</div>
+  <div class="empty"><b>${tfilter === 'channels' ? 'No channels right now' : 'No tasks right now'}</b><span>${tfilter === 'channels' ? 'New channels to join will show up here.' : 'New ways to earn credits will appear here.'}</span></div>
+  <h2>📣 Join &amp; earn <a data-a="soon">My channels</a></h2>
+  <button class="cta" data-a="soon" style="border-color:rgba(124,92,255,.4);background:rgba(124,92,255,.08);margin-top:0"><i style="background:rgba(124,92,255,.18)">➤</i><div><b>Promote your channel</b><small>Invite friends, get free members</small></div></button>`;
+}
+
+async function pageWallet() {
+  const hist = await api('/history');
+  const packs = Object.entries(me.packs);
+  return `<h1 style="font-size:38px">Wallet</h1>
+  <div class="card" style="margin:16px 0;border:2px solid transparent;background:linear-gradient(#0c0916,#0c0916) padding-box,linear-gradient(135deg,#3de3c6,#ff6b9a,#f8cd7c) border-box;padding:26px">
+    <div style="color:var(--muted)">Credits</div><div class="big" style="margin:8px 0 14px">${num(me.credits)}</div>
+    <b style="color:var(--gold1);font-size:20px">⭐ ${num(me.stars_spent)} Stars spent</b></div>
+  <h2>Top up credits <a>pay with Stars</a></h2>
+  <div class="grid3">${packs.map(([k, p], i) => `<button class="pack ${i === 1 ? 'hot' : ''}" data-a="topup" data-k="${k}"><b>${num(p.credits)}</b><small>credits</small><em>${p.bonus ? '+' + p.bonus + ' bonus' : ''}</em><strong>⭐ ${num(p.stars)}</strong></button>`).join('')}</div>
+  <div class="vip" style="margin-top:26px"><div class="row2"><span style="font-size:52px">👑</span><div><b style="font-size:26px">Premium VIP</b><div style="color:var(--muted)">${me.vip ? 'Active until ' + new Date(me.vip_until * 1000).toISOString().slice(0, 10) : 'Stand out and save credits'}</div></div></div>
+  <ul><li>👑 Animated VIP badge next to your name</li><li>💎 ${me.vip_discount}% off every file</li><li>🎁 +${me.vip_daily} credits on every daily claim</li></ul>
+  <div class="opts">${Object.entries(me.vip_plans).map(([k, v]) => `<button data-a="vip" data-k="${k}">${v.days} days<small>⭐ ${v.stars}</small></button>`).join('')}</div></div>
+  <h2>Have a promo code?</h2><div class="input"><input id="pc" placeholder="ENTER CODE" autocapitalize="characters"><button class="btn sm" data-a="promo">Redeem</button></div>
+  <h2>History</h2>${hist.map(h => `<div class="hist"><div><b>${esc(h.reason)}</b><small>${esc(h.ts)}</small></div><span class="${h.amount < 0 ? 'neg' : 'pos'}">${h.amount < 0 ? '' : '+'}${h.amount} cr</span></div>`).join('') || `<div class="empty"><b>No activity yet</b><span>Your credit history will appear here.</span></div>`}`;
+}
+
+function pageMe() {
+  const p = tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.photo_url;
+  const items = [
+    ['👥', 'Invite friends', 'Earn credits for every invite', 'invite'], ['➤', 'My channels', 'Get free members for your channel', 'soon'],
+    ['🛡', 'My badges', 'Show, hide and see how to earn badges', 'soon'], ['🏆', 'Leaderboard', 'Top referrers and top sellers', 'soon'],
+    ['🏷', 'Sell your files', 'Become a seller', 'soon'], ['🛍', 'Purchases', 'Files you’ve downloaded', 'purchases'],
+    ['❓', 'File requests', 'Ask for a file, vote for others', 'soon'], ['🌐', 'Language', 'English / বাংলা', 'soon'],
+    ['💡', 'How it works', 'Credits, Stars and staying safe', 'how'], ['💬', 'Support', me.support ? '@' + me.support : 'Contact the team', 'support']];
+  return `<div class="card hero"><div class="avbig">${p ? `<img src="${esc(p)}" alt="">` : `<span>${esc((me.name || '?')[0])}</span>`}</div>
+  <b style="font-size:24px">${esc(me.name)}</b><div style="color:var(--muted);margin:4px 0 8px">${me.username ? '@' + esc(me.username) + ' · ' : ''}ID ${me.id}</div>
+  <b style="color:var(--gold1);letter-spacing:.5px">${me.vip ? '👑 VIP MEMBER' : 'MEMBER'}</b></div>
+  <div class="tiles" style="margin:16px 0 26px">
+    <div class="tile"><i style="background:linear-gradient(135deg,#f8cd7c,#eea45e)">💳</i><b style="color:var(--gold1)">${num(me.credits)}</b><span>Balance</span></div>
+    <div class="tile"><i style="background:linear-gradient(135deg,#8a6bff,#6a4bf0)">🏆</i><b style="color:#c9b8ff">${num(me.earned)}</b><span>Credits earned</span></div>
+    <div class="tile"><i style="background:linear-gradient(135deg,#3de3c6,#1fae96)">👥</i><b style="color:var(--teal)">${me.referrals}</b><span>Referrals</span></div>
+    <div class="tile"><i style="background:linear-gradient(135deg,#ff6b8a,#e0356a)">📥</i><b style="color:#ffb0c4">${me.downloads}</b><span>Downloads</span></div></div>
+  <h2 style="margin-top:0">Menu</h2><div class="menu">${items.map(i => `<button class="mi" data-a="${i[3]}"><i>${i[0]}</i><div><b>${i[1]}</b><small>${esc(i[2])}</small></div>${i[3] === 'soon' ? '<span class="soon">Soon</span>' : '<s>›</s>'}</button>`).join('')}</div>`;
+}
+
+function pageInvite() {
+  const next = Object.keys(me.milestones).map(Number).sort((a, b) => a - b).find(n => n > me.referrals);
+  const pct = next ? Math.min(100, me.referrals / next * 100) : 100;
+  return `<button class="back" data-a="back">‹ Me</button><h1 style="font-size:38px">Invite <em>friends</em></h1>
+  <p class="sub">Get credits for every friend who joins, plus bonus rewards at each milestone.</p>
+  <div class="card"><div class="tiles" style="grid-template-columns:repeat(3,1fr);gap:10px">
+    <div class="tile" style="padding:16px 8px;text-align:center"><b style="font-size:30px">${me.referrals}</b><span>Referrals</span></div>
+    <div class="tile" style="padding:16px 8px;text-align:center"><b style="font-size:30px">${me.referral_earned}</b><span>Earned</span></div>
+    <div class="tile" style="padding:16px 8px;text-align:center"><b style="font-size:30px">+${me.ref_bonus}</b><span>Per invite</span></div></div>
+  <div class="copybox"><span>${esc(me.ref_link)}</span><button class="btn sm" data-a="copy">Copy</button></div>
+  <button class="btn" data-a="share">Share link</button></div>
+  <div class="card" style="margin-top:18px"><b style="font-size:22px">Milestone rewards</b>
+  <div class="bar"><div style="width:${pct}%"></div></div>
+  <div style="color:var(--muted)">${me.referrals} / ${next || '—'} referrals${next ? ' · next reward <b style="color:var(--gold1)">+' + me.milestones[next] + '</b> credits' : ''}</div>
+  <div class="chips" style="flex-wrap:wrap;margin:16px 0 0;padding:0;overflow:visible">${Object.entries(me.milestones).map(([n, b]) => `<span class="chip ${me.referrals >= n ? 'on' : ''}">${me.referrals >= n ? '✓ ' : ''}${n} · +${num(b)}</span>`).join('')}</div></div>`;
+}
+
+async function pagePurchases() {
+  const rows = await api('/purchases');
+  return `<button class="back" data-a="back">‹ Me</button><h1 style="font-size:38px">Purchases</h1><p class="sub">Files you’ve downloaded. Get them again anytime, free.</p>
+  ${rows.map(fileCard).join('') || `<div class="empty"><b>Nothing here yet</b><span>Files you download will appear here.</span></div>`}`;
+}
+
+const pages = {home: pageHome, files: pageFiles, tasks: pageTasks, wallet: pageWallet, me: pageMe};
+async function render(keepScroll) {
+  const y = window.scrollY;
+  try {
+    me = await api('/me');
+    const body = sub === 'invite' ? pageInvite() : sub === 'purchases' ? await pagePurchases() : await pages[tab]();
+    $('#app').innerHTML = topbar() + body;
+  } catch (e) { $('#app').innerHTML = `<div class="empty" style="padding-top:120px"><b>Couldn’t load</b><span>${esc(e.message)}</span></div>`; }
+  const T = [['home', '⌂', 'Home'], ['files', '🗀', 'Files'], ['tasks', '☑', 'Tasks'], ['wallet', '▭', 'Wallet'], ['me', '☺', 'Me']];
+  $('#nav').innerHTML = T.map(t => `<button class="${tab === t[0] ? 'on' : ''}" data-a="tab" data-t="${t[0]}"><span>${t[1]}</span>${t[2]}</button>`).join('');
+  keepScroll ? window.scrollTo(0, y) : window.scrollTo(0, 0);
+  bindInputs();
+}
+function bindInputs() {
+  const hs = $('#hs'); if (hs) hs.addEventListener('keydown', e => { if (e.key === 'Enter' && hs.value.trim()) { fq = hs.value.trim(); tab = 'files'; render(); } });
+  const fs = $('#fs'); if (fs) { let t; fs.addEventListener('input', () => { clearTimeout(t); t = setTimeout(async () => { fq = fs.value.trim(); await refreshList(); }, 350); }); }
+}
+async function refreshList() {
+  const r = await api(`/files?q_=${encodeURIComponent(fq)}&cat=${encodeURIComponent(fcat)}&saved=${fsaved}`);
+  $('#flist').innerHTML = fmode === 'library' ? (r.files.map(fileCard).join('') || `<div class="empty"><b>No files found</b><span>Try another search, or request the file below.</span></div>`) : $('#flist').innerHTML;
+}
+function invoice(link, done) { tg ? tg.openInvoice(link, s => { if (s === 'paid') { toast('Payment received'); setTimeout(() => render(true), 1200); } }) : openLink(link); }
+
+const H = {
+  tab: d => { tab = d.t; sub = null; render(); },
+  bell: () => toast('No new notifications'),
+  soon: () => toast('Coming in the next update'),
+  back: () => { sub = null; render(); },
+  invite: () => { sub = 'invite'; render(); },
+  purchases: () => { sub = 'purchases'; render(); },
+  cat: d => { fcat = d.c; fsaved = 0; tab = 'files'; render(); },
+  fc: d => { fcat = d.c; fsaved = 0; render(true); },
+  fsaved: () => { fsaved = fsaved ? 0 : 1; fcat = ''; render(true); },
+  mode: d => { fmode = d.m; render(true); },
+  tf: d => { tfilter = d.c; render(true); },
+  link: d => openLink(d.u),
+  how: () => tg && tg.showAlert ? tg.showAlert('Credits unlock files. Earn them with daily rewards, tasks and invites, or top up with Telegram Stars. Only download files from sellers you trust.') : toast('Credits unlock files'),
+  support: () => me.support ? openLink('https://t.me/' + me.support) : toast('Support is not set up yet'),
+  copy: () => { navigator.clipboard && navigator.clipboard.writeText(me.ref_link).then(() => toast('Link copied')).catch(() => toast(me.ref_link)); },
+  share: () => openLink('https://t.me/share/url?url=' + encodeURIComponent(me.ref_link) + '&text=' + encodeURIComponent('Download files for free on ' + me.brand)),
+  daily: async () => { try { const r = await api('/daily', {}); toast('+' + r.amount + (r.bonus ? ' +' + r.bonus + ' streak bonus' : '') + ' credits'); render(true); } catch (e) { toast(e.message); } },
+  promo: async () => { const c = $('#pc').value.trim(); if (!c) return toast('Enter a code'); try { const r = await api('/promo', {code: c}); toast('+' + r.credits + ' credits added'); render(true); } catch (e) { toast(e.message); } },
+  topup: async d => { try { const r = await api('/topup', {key: d.k}); invoice(r.link); } catch (e) { toast(e.message); } },
+  vip: async d => { try { const r = await api('/vip', {key: d.k}); invoice(r.link); } catch (e) { toast(e.message); } },
+  get: d => {
+    const all = [...document.querySelectorAll('[data-a="get"][data-id="' + d.id + '"]')][0];
+    const label = all ? all.textContent.trim() : '';
+    confirmBox(label === 'Get again' ? 'Send this file to your chat again?' : 'Get this file for ' + label + '?', async () => {
+      try { const r = await api('/files/' + d.id + '/get', {}); toast('File sent to your chat'); render(true); } catch (e) { toast(e.message); }
+    });
+  },
+  stars: async d => { try { const r = await api('/files/' + d.id + '/stars', {}); invoice(r.link); } catch (e) { toast(e.message); } },
+  save: async d => { try { await api('/files/' + d.id + '/save', {}); render(true); } catch (e) { toast(e.message); } },
+  report: d => {
+    const sheet = document.createElement('div'); sheet.className = 'sheet';
+    sheet.innerHTML = `<div><b style="font-size:22px">Report this file</b><p class="sub">Tell us what’s wrong. Admins review every report.</p>
+      <div class="input" style="padding:0;border:0;background:none"><input id="rr" placeholder="Not working, wrong file, spam…" style="text-transform:none"></div>
+      <button class="btn" style="margin-top:14px" id="rs">Send report</button><button class="btn ghost" style="margin-top:10px" id="rc">Cancel</button></div>`;
+    document.body.appendChild(sheet);
+    sheet.querySelector('#rc').onclick = () => sheet.remove();
+    sheet.querySelector('#rs').onclick = async () => { try { await api('/files/' + d.id + '/report', {reason: sheet.querySelector('#rr').value}); toast('Report sent'); } catch (e) { toast(e.message); } sheet.remove(); };
+  },
+  rate: d => {
+    let v = 0; const sheet = document.createElement('div'); sheet.className = 'sheet';
+    sheet.innerHTML = `<div><b style="font-size:22px">Rate this file</b><div class="stars">${[1, 2, 3, 4, 5].map(n => `<button data-n="${n}">★</button>`).join('')}</div>
+      <button class="btn" id="rs">Submit rating</button><button class="btn ghost" style="margin-top:10px" id="rc">Cancel</button></div>`;
+    document.body.appendChild(sheet);
+    sheet.querySelectorAll('.stars button').forEach(b => b.onclick = () => { v = +b.dataset.n; sheet.querySelectorAll('.stars button').forEach(x => x.classList.toggle('on', +x.dataset.n <= v)); });
+    sheet.querySelector('#rc').onclick = () => sheet.remove();
+    sheet.querySelector('#rs').onclick = async () => { if (!v) return toast('Pick a star rating'); try { await api('/files/' + d.id + '/rate', {stars: v}); toast('Thanks for rating'); sheet.remove(); render(true); } catch (e) { toast(e.message); sheet.remove(); } };
+  }
+};
+document.addEventListener('click', e => { const el = e.target.closest('[data-a]'); if (el && H[el.dataset.a]) H[el.dataset.a](el.dataset); });
+render();
+</script>
+</body>
+</html>
